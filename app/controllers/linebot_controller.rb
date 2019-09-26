@@ -21,10 +21,17 @@ end
       when Line::Bot::Event::Message
         case event.type
         when Line::Bot::Event::MessageType::Text
-          message = {
-            type: 'text',
-            text: event.message['text' + 'でやんす']
-          }
+          message = if event.message['text'].include?('蒲生')
+                      {
+                        type: 'text',
+                        text: 'よくぞ見破った！我が名はガモモンボールGT!!!!!'
+                      }
+                    else
+                      {
+                        type: 'text',
+                        text: event.message['text'] + 'でやんす'
+                      }
+                    end
           client.reply_message(event['replyToken'], message)
         when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video
           response = client.get_message_content(event.message['id'])
